@@ -1,0 +1,27 @@
+services:
+  ethereum-node-healthcheck:
+    build: .
+    container_name: ethereum-node-healthcheck
+    hostname: ethereum-node-healthcheck
+    restart: unless-stopped
+    environment:
+      ETHEREUM_NODE_URL: http://l2_execution_engine:8545
+      REFERENCE_NODES: https://taiko-rpc.publicnode.com,https://rpc.taiko.xyz,https://taiko-rpc.publicnode.com
+    ports:
+      - 127.0.0.1:8080:8080
+    networks:
+      - simple-taiko-node_default
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 32M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+
+networks:
+  simple-taiko-node_default:
+    external: true
